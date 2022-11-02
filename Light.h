@@ -22,10 +22,16 @@ private:
 
     //size of light
     float size;
+    //intensity of light
+    float intensity;
 
 public:
     //constructors
     Light();
     Light(Vector3 position, Vector3 color, float size);
     ~Light();
+
+    //getters
+    float getSize();
+    float getIntensity();
 };

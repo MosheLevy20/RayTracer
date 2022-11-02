@@ -59,6 +59,11 @@ int main() {
   float cameraPixelSize = 1;
   Camera camera(cameraPosition, cameraDirection, cameraUp, cameraFOV, cameraNearPlane, cameraFarPlane, cameraPixelWidth, cameraPixelHeight, cameraPixelSize);
 
+  //snapshots vector
+  std::vector<std::vector<Vector3>> snapshots;
+  //current snapshot
+  std::vector<Vector3> currentSnapshot;
+
   //run ray tracing algorithm
   //step 1: create ray for each pixel
   //step 2: find intersection of ray with objects in scene
@@ -71,16 +76,20 @@ int main() {
   //loop through pixels 
   for (int i = 0; i < camera.getPixelWidth(); i++) {
     for (int j = 0; j < camera.getPixelHeight(); j++) {
+      //ray color Vector3, in future will have multiple rays per pixel and average color
+      Vector3 rayColor(0, 0, 0);
       //create ray for each pixel
       Ray currentRay = camera.getRayFromPixel(i*camera.getPixelWidth()+j);
       currentRay.traceRay(objects);
-
+      rayColor += currentRay.getColor();
+      //add ray color to current snapshot
+      currentSnapshot.push_back(rayColor);
     }
   }
-
-
-
-
+  //save current snapshot to file
+  snapshots.push_back(currentSnapshot);
+  //save snapshots to file
+  saveSnapshotsToFile("twoSpheres.png", 0);
 
   return 0;
 }

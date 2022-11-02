@@ -35,6 +35,12 @@ public:
     virtual Vector3 getNormal(Vector3 point) = 0;
     //get point of intersection
     virtual Vector3 getPointOfIntersection() = 0;
+    //returns type of object
+    virtual std::string getType() = 0;
+    //getIntensity
+    virtual float getIntensity() = 0;
+    //get color
+    virtual Vector3 getColor() = 0;
+    
 
-}
-
+};

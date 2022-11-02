@@ -28,6 +28,9 @@ private:
     //number of bounces
     int bounces;
 
+    //vector of all the objects the ray has hit
+    std::vector<Object*> objectsHit;
+
 
 
 
