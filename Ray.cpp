@@ -68,12 +68,14 @@ void Ray::traceRay(std::vector<Object*> objects) {
             minIndex = k;
         }
     }
+    //cout here
+    //cout<<"minDistance: "<<minDistance<<std::endl;
     if (minIndex != -1){
         advance(minDistance);
         objectsHit.push_back(objects[minIndex]);
 
-        // if object is a light
-        if (objects[minIndex]->getType() == "light") {
+        // if object is a light or bounce limit is reached, return
+        if (objects[minIndex]->getType() == "light" || bounces >= 5) {
             //calculate color of pixel based on light intensity and color
             //Vector3 pixColor = objects[minIndex]->getColor();
             //TODO calculate based on colors light has already hit

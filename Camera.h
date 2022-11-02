@@ -34,9 +34,9 @@ private:
     //height of camera
     float height;
     //pixel width of camera
-    float pixelWidth;
+    int pixelWidth;
     //pixel height of camera
-    float pixelHeight;
+    int pixelHeight;
     //pixel size of camera
     float pixelSize;
     //pixel count of camera
@@ -84,9 +84,9 @@ public:
     //get height
     float getHeight();
     //get pixel width
-    float getPixelWidth();
+    int getPixelWidth();
     //get pixel height
-    float getPixelHeight();
+    int getPixelHeight();
     //get pixel size
     float getPixelSize();
     //get pixel count

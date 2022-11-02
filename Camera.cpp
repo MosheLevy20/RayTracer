@@ -60,9 +60,9 @@ Camera::Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfVie
     //set height
     this->height = width * pixelHeight / pixelWidth;
     //set pixel width
-    this->pixelWidth = width / pixelWidth;
+    this->pixelWidth = pixelWidth;
     //set pixel height
-    this->pixelHeight = height / pixelHeight;
+    this->pixelHeight = pixelHeight;
     //set pixel size
     this->pixelSize = pixelSize;
     //set pixel count
@@ -84,12 +84,12 @@ Camera::~Camera()
 
 //private methods
 //get pixel width
-float Camera::getPixelWidth()
+int Camera::getPixelWidth()
 {
     return pixelWidth;
 }
 //get pixel height
-float Camera::getPixelHeight()
+int Camera::getPixelHeight()
 {
     return pixelHeight;
 }

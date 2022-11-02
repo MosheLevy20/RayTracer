@@ -22,17 +22,22 @@
 
 //save snapshots to png file
 void saveSnapshotsToFile(std::string fileName, std::vector<Vector3> snapshot, int pixelWidth, int pixelHeight) {
-    //create file
-    std::ofstream file(fileName);
-    //write header
-    file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
-    //write pixel data
-    int pixelCount = pixelWidth * pixelHeight;
-    for (int i = 0; i < pixelCount; i++){
-        file << (int)(snapshot[i].getX() * 255) << " " << (int)(snapshot[i].getY() * 255) << " " << (int)(snapshot[i].getZ() * 255) << std::endl;
-    }
-    //close file
-    file.close();
+  //first print snapshot to std out
+  int pixelCount = pixelWidth * pixelHeight;
+  // for (int i = 0; i < pixelCount; i++){
+  //     std::cout << (int)(snapshot[i].getX() * 255) << " " << (int)(snapshot[i].getY() * 255) << " " << (int)(snapshot[i].getZ() * 255) << std::endl;
+  // }
+  //create file
+  std::ofstream file(fileName);
+  //write header
+  file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
+  //write pixel data
+
+  for (int i = 0; i < pixelCount; i++){
+      file << (int)(snapshot[i].getX() * 255) << " " << (int)(snapshot[i].getY() * 255) << " " << (int)(snapshot[i].getZ() * 255) << std::endl;
+  }
+  //close file
+  file.close();
 }
 
 //TODO destructors
@@ -86,11 +91,12 @@ int main() {
   float cameraFOV = 90;
   float cameraNearPlane = 1;
   float cameraFarPlane = 100;
-  float cameraPixelWidth = 1;
-  float cameraPixelHeight = 1;
+  int cameraPixelWidth = 100;
+  int cameraPixelHeight = 100;
   float cameraPixelSize = 1;
+  std::cout << "Progress init: " << 0  << std::endl;
   Camera camera(cameraPosition, cameraDirection, cameraUp, cameraFOV, cameraNearPlane, cameraFarPlane, cameraPixelWidth, cameraPixelHeight, cameraPixelSize);
-
+  
   //snapshots vector
   std::vector<std::vector<Vector3>> snapshots;
   //current snapshot
@@ -106,6 +112,7 @@ int main() {
   //step 7: save image to file
 
   //loop through pixels 
+  std::cout << "Progress init: " << camera.getPixelWidth() << std::endl;
   for (int i = 0; i < camera.getPixelWidth(); i++) {
     //print out progress
     std::cout << "Progress: " << (float)i / (float)camera.getPixelWidth() * 100 << "%" << std::endl;
@@ -118,12 +125,14 @@ int main() {
       rayColor += currentRay.getColor();
       //add ray color to current snapshot
       currentSnapshot.push_back(rayColor);
+      //print out progress
+      //std::cout << "Progress: " << (float)j / (float)camera.getPixelHeight() * 100 << "%"<< " pixel width="<< (float)camera.getPixelWidth()<< "pixel height="<< (float)camera.getPixelHeight() << std::endl;
     }
   }
   //save current snapshot to file
   snapshots.push_back(currentSnapshot);
   //save snapshots to file
-  saveSnapshotsToFile("twoSpheres.png", currentSnapshot, camera.getPixelWidth(), camera.getPixelHeight());
+  saveSnapshotsToFile("twoSpheres.txt", currentSnapshot, camera.getPixelWidth(), camera.getPixelHeight());
 
   return 0;
 }
