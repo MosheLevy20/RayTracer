@@ -9,11 +9,13 @@
 //include my classes
 #include "Vector3.h"
 #include "Ray.h"
-#include "Object.h"
 #include "Sphere.h"
 #include "Plane.h"
 #include "Light.h"
 #include "Camera.h"
+#include "Object.h"
+
+
 //#include "RayTracer.h"
 
 //which parts of this project still need to be done?

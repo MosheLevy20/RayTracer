@@ -1,5 +1,7 @@
 //header for Light class which inherits from Object class
 //include standard libraries
+#ifndef LIGHT_H
+#define LIGHT_H
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -39,3 +41,4 @@ public:
     std::string getType();
 };
 
+#endif

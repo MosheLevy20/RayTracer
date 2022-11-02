@@ -1,5 +1,7 @@
 //header for Camera class
 //include standard libraries
+#ifndef CAMERA_H
+#define CAMERA_H
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -7,6 +9,7 @@
 //include my classes
 #include "Vector3.h"
 #include "Ray.h"
+#include "Object.h"
 
 class Camera
 {
@@ -45,10 +48,7 @@ private:
 
     
     //private methods
-    //get pixel width
-    float getPixelWidth();
-    //get pixel height
-    float getPixelHeight();
+
     //get x of pixel
     float getXoPix(int pixel);
     //get y of pixel
@@ -123,3 +123,4 @@ public:
     Ray getRayFromPixel(int pixel);
 };
 
+#endif

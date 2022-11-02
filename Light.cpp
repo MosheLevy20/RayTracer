@@ -1,13 +1,4 @@
 //implementation of the Light class
-//include standard libraries
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <string>
-//include my classes
-#include "Vector3.h"
-#include "Ray.h"
-#include "Object.h"
 #include "Light.h"
 
 //constructors

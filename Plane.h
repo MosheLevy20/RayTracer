@@ -1,5 +1,9 @@
 //header for Plane class which inherits from Object class
 //include standard libraries
+#ifndef PLANE_H
+#define PLANE_H
+
+
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -8,6 +12,7 @@
 #include "Vector3.h"
 #include "Ray.h"
 #include "Object.h"
+
 
 class Plane : public Object
 {
@@ -28,3 +33,5 @@ public:
     std::string getType();
 
 };
+
+#endif

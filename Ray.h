@@ -1,5 +1,8 @@
 //header file for ray class
 //include standard libraries
+#ifndef RAY_H
+#define RAY_H
+
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -7,7 +10,7 @@
 //include Vector3 class
 #include "Vector3.h"
 //if not defined
-#include "Object.h"
+class Object;
 
 class Ray
 {
@@ -68,3 +71,4 @@ public:
     
 
 };
+#endif

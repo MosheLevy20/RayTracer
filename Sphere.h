@@ -1,5 +1,7 @@
 //header for Sphere class which inherits from Object class
 //include standard libraries
+#ifndef SPHERE_H
+#define SPHERE_H
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -8,6 +10,8 @@
 #include "Vector3.h"
 #include "Ray.h"
 #include "Object.h"
+
+class Ray;
 
 class Sphere : public Object
 {
@@ -28,3 +32,4 @@ public:
     //type
     std::string getType();
 };
+#endif

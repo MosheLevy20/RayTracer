@@ -1,11 +1,6 @@
 //implementation of the Ray class
-//include standard libraries
-#include <iostream>
-#include <cmath>
-//include my classes
-#include "Vector3.h"
 #include "Ray.h"
-#include "Object.h"
+
 
 //constructors
 Ray::Ray() {

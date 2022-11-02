@@ -1,11 +1,16 @@
 //header for Object class
 //include standard libraries
+#ifndef OBJECT_H
+#define OBJECT_H
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <string>
 
 //include my classes
 #include "Vector3.h"
+#include "Ray.h"
+
 class Ray;
 //since Ray.h includes Object.h, i can't include Object.h in Ray.h, what do i do?
 //i can't include Object.h in Ray.h because it will cause a circular dependency
@@ -67,3 +72,4 @@ public:
     
 
 };
+#endif

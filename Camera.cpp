@@ -1,12 +1,4 @@
 //implementation of the Camera class
-//include standard libraries
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <string>
-//include my classes
-#include "Vector3.h"
-#include "Ray.h"
 
 //include header file
 #include "Camera.h"
