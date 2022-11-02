@@ -17,7 +17,7 @@ private:
 
     //private methods
     //check for intersection with ray
-    bool checkIntersection(Ray ray, float& distance);
+    bool checkIntersection(Ray ray);
     //get normal at point of intersection
     Vector3 getNormal(Vector3 point);
     //get point of intersection
@@ -26,6 +26,6 @@ private:
 public:
     //constructors
     Sphere();
-    Sphere(Vector3 position, Vector3 color, float radius, float specularCoefficient, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient);
+    Sphere(Vector3 position, Vector3 color, float radius, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient);
     ~Sphere();
 };

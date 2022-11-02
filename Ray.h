@@ -28,17 +28,6 @@ private:
     //number of bounces
     int bounces;
 
-    //private methods
-    //advance ray 
-    void advance(float distance);
-    //reflect ray
-    void reflect(Vector3 normal);
-    //refract ray
-    void refract(Vector3 normal, float n1, float n2);
-    //check for intersection with objects in scene 
-    void checkIntersection(std::vector<Object*> objects, int& objectIndex);
-    //update ray color
-    void updateColor(Vector3 color, float coefficient1, float coefficient2);
 
 
 
@@ -60,6 +49,19 @@ public:
     void setOrigin(Vector3 origin);
     void setDirection(Vector3 direction);
     void setColor(Vector3 color);
-    //other methods
+
+    //trace ray
+    void traceRay(std::vector<Object*> objects);
+    //advance ray
+    void advance(float distance);
+    //reflect ray
+    void reflect(Vector3 normal);
+    //refract ray
+    void refract(Vector3 normal, float n1, float n2);
+
+    //update ray color
+    void updateColor(Vector3 color, float coefficient1, float coefficient2);
+
+    
 
 };

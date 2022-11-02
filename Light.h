@@ -14,15 +14,18 @@ class Light : public Object
 private:
     //private methods
     //check for intersection with ray
-    bool checkIntersection(Ray ray, float& distance);
+    bool checkIntersection(Ray ray);
     //get normal at point of intersection
     Vector3 getNormal(Vector3 point);
     //get point of intersection is not needed for light but must be defined
     Vector3 getPointOfIntersection(Ray ray);
 
+    //size of light
+    float size;
+
 public:
     //constructors
     Light();
-    Light(Vector3 position, Vector3 color);
+    Light(Vector3 position, Vector3 color, float size);
     ~Light();
 };

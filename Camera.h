@@ -33,6 +33,8 @@ private:
     float pixelWidth;
     //pixel height of camera
     float pixelHeight;
+    //pixel size of camera
+    float pixelSize;
     //pixel count of camera
     int pixelCount;
     //pixel array of camera
@@ -56,7 +58,7 @@ private:
 public:
     //constructors
     Camera();
-    Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfView, float nearPlane, float farPlane, float pixelWidth, float pixelHeight);
+    Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfView, float nearPlane, float farPlane, float pixelWidth, float pixelHeight, float pixelSize);
     ~Camera();
     
     //getters

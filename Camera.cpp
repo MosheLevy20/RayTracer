@@ -37,6 +37,8 @@ Camera::Camera()
     pixelWidth = 1;
     //set pixel height
     pixelHeight = 1;
+    //set pixel size
+    pixelSize = 1;
     //set pixel count
     pixelCount = 1;
     //set pixel array
@@ -45,7 +47,7 @@ Camera::Camera()
     snapshots = std::vector<std::vector<Vector3>>(1);
 }
 //constructor with parameters
-Camera::Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfView, float nearPlane, float farPlane, float pixelWidth, float pixelHeight)
+Camera::Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfView, float nearPlane, float farPlane, float pixelWidth, float pixelHeight, float pixelSize)
 {
     //set position
     this->position = position;
@@ -54,7 +56,7 @@ Camera::Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfVie
     //set up
     this->up = up;
     //set right
-    this->right = direction.crossProduct(up);
+    this->right = direction.cross(up);
     //set field of view
     this->fieldOfView = fieldOfView;
     //set near plane
@@ -69,6 +71,8 @@ Camera::Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfVie
     this->pixelWidth = width / pixelWidth;
     //set pixel height
     this->pixelHeight = height / pixelHeight;
+    //set pixel size
+    this->pixelSize = pixelSize;
     //set pixel count
     this->pixelCount = pixelWidth * pixelHeight;
     //set pixel array
@@ -111,7 +115,7 @@ float Camera::getYoPix(int pixel)
 
 //public methods
 //get ray from camera
-Ray Camera::getRay(int pixel)
+Ray Camera::getRayFromPixel(int pixel)
 {
     //get x of pixel
     float x = getXoPix(pixel);
@@ -120,17 +124,18 @@ Ray Camera::getRay(int pixel)
     //get direction of ray
     Vector3 direction = this->direction + right * x + up * y;
     //get position of ray which is the direction projected onto the near plane
-    Vector3 position = right * x + up * y + this->position;
+    Vector3 position = right * x * pixelSize + up * y * pixelSize + this->position;
 
     //return ray
     return Ray(position, direction, pixel);
 }
 //get pixel array
-std::vector<Vector3> Camera::getPixelArray()
-{
-    return pixelArray;
-}
+// std::vector<Vector3> Camera::getPixelArray()
+// {
+//     return pixelArray;
+// }
 //get snapshots
+
 std::vector<std::vector<Vector3>> Camera::getSnapshots()
 {
     return snapshots;

@@ -12,45 +12,43 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Light.h"
-#include "RayTracer.h"
+#include "Camera.h"
+//#include "RayTracer.h"
+
+//which parts of this project still need to be done?
+
+
 
 //TODO make reflections random depending on diffuse coefficient
 int main() {
   //create vector of objects in scene
   std::vector<Object*> objects;
   
-  //create spheres
-  Sphere sphere1(Vector3(100, 100, 100), Vector3(1, 0, 0), 50, 0.5, 0.5, 1.0, 0.0, 0.0);
-  Sphere sphere2(Vector3(200,50,100), Vector3(0, 1, 0), 50, 0.5, 0.5, 1.0, 0.0, 0.0);
-  Sphere sphere3(Vector3(300, 100, 100), Vector3(0, 0, 1), 50, 0.5, 0.5, 1.0, 0.0, 0.0);
+  //create 2 spheres, one transparent and one reflective
 
-  //create planes as walls of room TODO this needs to be fixed
-  Plane plane1(Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 1, 0), 0.5, 0.5, 1.0, 0.0, 0.0);
-  Plane plane2(Vector3(0, 0, 0), Vector3(1, 0, 0), Vector3(0, 0, 1), 0.5, 0.5, 1.0, 0.0, 0.0);
-  Plane plane3(Vector3(0, 0, 200), Vector3(1, 0, 0), Vector3(0, 0, 1), 0.5, 0.5, 1.0, 0.0, 0.0);
-  Plane plane4(Vector3(0, 0, 0), Vector3(0, 1, 0), Vector3(1, 0, 0), 0.5, 0.5, 1.0, 0.0, 0.0);
-  Plane plane5(Vector3(0, 200, 0), Vector3(0, 1, 0), Vector3(1, 0, 0), 0.5, 0.5, 1.0, 0.0, 0.0);
-  Plane plane6(Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 1, 0), 0.5, 0.5, 1.0, 0.0, 0.0);
+
+  //create 6 planes as walls of room, floor, and ceiling
   
-  //add lights
-  Light light1(Vector3(100, 100, 0), Vector3(1, 1, 1));
-  Light light2(Vector3(200, 100, 0), Vector3(1, 1, 1));
+  
+  //add 1 light on ceiling
+
+
 
   //add objects to vector
   objects.push_back(&sphere1);
   objects.push_back(&sphere2);
-  objects.push_back(&sphere3);
+
   objects.push_back(&plane1);
   objects.push_back(&plane2);
   objects.push_back(&plane3);
   objects.push_back(&plane4);
   objects.push_back(&plane5);
   objects.push_back(&plane6);
+
   objects.push_back(&light1);
-  objects.push_back(&light2);
 
   //create camera
-  Vector3 cameraPosition(100, 100, 0);
+  Vector3 cameraPosition(0, 0, 0);
   Vector3 cameraDirection(0, 0, 1);
   Vector3 cameraUp(0, 1, 0);
   float cameraFOV = 90;
@@ -58,7 +56,8 @@ int main() {
   float cameraFarPlane = 100;
   float cameraPixelWidth = 1;
   float cameraPixelHeight = 1;
-  Camera camera(cameraPosition, cameraDirection, cameraUp, cameraFOV, cameraNearPlane, cameraFarPlane, cameraPixelWidth, cameraPixelHeight);
+  float cameraPixelSize = 1;
+  Camera camera(cameraPosition, cameraDirection, cameraUp, cameraFOV, cameraNearPlane, cameraFarPlane, cameraPixelWidth, cameraPixelHeight, cameraPixelSize);
 
   //run ray tracing algorithm
   //step 1: create ray for each pixel
@@ -73,9 +72,8 @@ int main() {
   for (int i = 0; i < camera.getPixelWidth(); i++) {
     for (int j = 0; j < camera.getPixelHeight(); j++) {
       //create ray for each pixel
-      Ray currentRay = camera.createRay(i, j);
-      //while ray has not reached max number of reflections
-      
+      Ray currentRay = camera.getRayFromPixel(i*camera.getPixelWidth()+j);
+      currentRay.traceRay(objects);
 
     }
   }
@@ -87,84 +85,45 @@ int main() {
   return 0;
 }
 
-//recursive function that advances ray through scene
-//returns color of pixel
-//TODO how to deal with refracted rays traveling inside objects (i.e. how to get intersection points, refraction is from n2 to n1 as well)
-Vector3 RayTracer::traceRay(Ray ray) {
-  if (currentRay.getBounces() < 5) {
-    //find intersection of ray with objects in scene
-    //loop through objects in scene
-    for (int k = 0; k < objects.size(); k++) {
-      //check if ray intersects object
-      if (objects[k]->checkIntersection(currentRay)) {
-        // if object is a light
-        if (objects[k]->getType() == "light") {
-          //calculate color of pixel based on light intensity and color
-          vector3 pixColor = objects[k]->getColor();
-          //TODO calculate based on colors light has already hit
-          pixColor *= objects[k]->getIntensity()/currentRay.getBounces();
-          return pixColor;
-        }
-        //get point of intersection
-        Vector3 pointOfIntersection = objects[k]->getPointOfIntersection(currentRay);
-        //get normal at point of intersection
-        Vector3 normal = objects[k]->getNormal(pointOfIntersection);
-        //get color of object
-        Vector3 color = objects[k]->getColor();
-        //get material properties of object
-        float reflectiveCoefficient = objects[k]->getReflectiveCoefficient();
-        float transmissionCoefficient = objects[k]->getTransmissionCoefficient();
-        //if reflective coefficient is greater than 0, reflect ray
-        if (reflectiveCoefficient > 0) {
-          //reflect ray
-          currentRay.reflect(normal);
-          //set ray origin to point of intersection
-          currentRay.setOrigin(pointOfIntersection);
-          //set ray direction to reflected ray direction
-          currentRay.setDirection(currentRay.getDirection());
-          //increment reflection count
-          currentRay.incrementBounces();
-          //call traceRay function again
-          return traceRay(currentRay);
-        }
-        //if reflective coefficient is 0 and refractive coefficient is greater than 0, refract ray
-        //if reflective coefficient is greater than 0 and refractive coefficient is greater than 0, create new ray and refract it
-        if (reflectiveCoefficient == 0 && transmissionCoefficient > 0) {
-          //refract ray
-          currentRay.refract(normal);
-          //set ray origin to point of intersection
-          currentRay.setOrigin(pointOfIntersection);
-          //set ray direction to refracted ray direction
-          currentRay.setDirection(currentRay.getDirection());
-          //increment reflection count
-          currentRay.incrementBounces();
-          //call traceRay function again
-          return traceRay(currentRay);
-        }
-        else if (reflectiveCoefficient > 0 && transmissionCoefficient > 0) {
-          //create new ray
-          Ray newRay(pointOfIntersection, currentRay.getDirection());
-          //set new ray reflection count to current ray reflection count
-          newRay.setBounces(currentRay.getBounces());
-          //refract new ray
-          newRay.refract(normal);
-          //refract ray to exit medium
-          newRay.refract(normal);
-          //set ray origin to point of intersection
-          newRay.setOrigin(pointOfIntersection);
-          //call traceRay function again
-          return traceRay(newRay);
-        }
-      }
+
+
+
+//save snapshots to png file
+void saveSnapshotsToFile(std::string fileName, int snapshot){
+    //create file
+    std::ofstream file(fileName);
+    //write header
+    file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
+    //write pixel data
+    for (int i = 0; i < pixelCount; i++){
+        file << (int)(snapshots[snapshot][i].getX() * 255) << " " << (int)(snapshots[snapshot][i].getY() * 255) << " " << (int)(snapshots[snapshot][i].getZ() * 255) << std::endl;
     }
-  }
-  else {
-    //return black
-    return Vector3(0, 0, 0);
-  }
+    //close file
+    file.close();
+}
+
+//save snapshots to mp4 video file
+void saveSnapshotsToVideo(std::string fileName, int fps){
+    //create file
+    std::ofstream file(fileName);
+    //write header for mp4 file
+    file << "ffmpeg -r " << fps << " -f image2 -s " << pixelWidth << "x" << pixelHeight << " -i " << fileName << "%d.png -vcodec libx264 -crf 25  -pix_fmt yuv420p " << fileName << ".mp4" << std::endl;
+    //write pixel data for each snapshot to mp4 file
+    for (int i = 0; i < snapshots.size(); i++){
+        //write header for png file
+        file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
+        //write pixel data for png file
+        for (int j = 0; j < pixelCount; j++){
+            file << (int)(snapshots[i][j].getX() * 255) << " " << (int)(snapshots[i][j].getY() * 255) << " " << (int)(snapshots[i][j].getZ() * 255) << std::endl;
+        }
+        //save png file
+        file << "mv " << fileName << i << ".png " << fileName << i << ".png" << std::endl;
+    }
+    //close file
+    file.close();
 }
 
 //to compile this project in terminal, type:
-// g++ -std=c++11 -o RayTracer RayTracer.cpp Vector3.cpp Ray.cpp Object.cpp Sphere.cpp
+// g++ -std=c++11 -o RayTracer RayTracer.cpp Vector3.cpp Ray.cpp Object.cpp Sphere.cpp Plane.cpp Light.cpp Camera.cpp
 //to run this project in terminal, type:
 // ./RayTracer
