@@ -7,9 +7,7 @@
 //include Vector3 class
 #include "Vector3.h"
 //if not defined
-#ifndef OBJECT_H //TODO does this work?
 #include "Object.h"
-#endif
 
 class Ray
 {
@@ -43,11 +41,10 @@ public:
     Vector3 getOrigin() const;
     Vector3 getDirection() const;
     //this function should calculate the color of the ray based on the objects it has hit and the light it has hit
-    Vector3 getColor() const;
     int getPixelIndex() const;
     //get reflection count
     int getBounces() const;
-
+    Vector3 getColor();
 
     //mutators
     void setOrigin(Vector3 origin);
@@ -63,8 +60,7 @@ public:
     //refract ray
     void refract(Vector3 normal, float n1, float n2);
 
-    //update ray color
-    void updateColor(Vector3 color, float coefficient1, float coefficient2);
+   
 
     //increment bounces
     void incrementBounces();

@@ -14,7 +14,7 @@ class Light : public Object
 private:
     //private methods
     //check for intersection with ray
-    bool checkIntersection(Ray ray);
+    float checkIntersection(Ray ray);
     //get normal at point of intersection
     Vector3 getNormal(Vector3 point);
     //get point of intersection is not needed for light but must be defined
@@ -34,4 +34,8 @@ public:
     //getters
     float getSize();
     float getIntensity();
+
+    //type
+    std::string getType();
 };
+

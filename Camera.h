@@ -11,6 +11,7 @@
 class Camera
 {
 private:
+    //some of these variables are not used but are included for future use
     //position of camera
     Vector3 position;
     //direction of camera
@@ -120,20 +121,5 @@ public:
     //other methods
     //get ray from pixel
     Ray getRayFromPixel(int pixel);
-
-    //take snapshot
-    void takeSnapshot();
-    //clear snapshots
-    void clearSnapshots();
-
-    
-
-    //save single snapshot to file
-    void saveSnapshotToFile(std::string fileName, int snapshot);
-    //save all snapshots to video
-    void saveSnapshotsToVideo(std::string fileName, int fps);
-
-    
-
 };
 

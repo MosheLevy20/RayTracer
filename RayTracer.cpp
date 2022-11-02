@@ -19,7 +19,7 @@
 //which parts of this project still need to be done?
 
 
-
+//TODO destructors
 //TODO make reflections random depending on diffuse coefficient
 int main() {
   //create vector of objects in scene

@@ -21,7 +21,10 @@ public:
     Plane(Vector3 position, Vector3 normal, Vector3 color, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient);
     ~Plane();
     //getters
-    Vector3 getNormal();
-
+    Vector3 getNormal(Vector3 point);
+    //check for intersection with ray
+    float checkIntersection(Ray ray);
+    //type
+    std::string getType();
 
 };

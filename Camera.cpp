@@ -101,7 +101,7 @@ float Camera::getPixelHeight()
 {
     return pixelHeight;
 }
-//TODO make sure this is correct
+//TODO make sure this is correct, and add field of view explicitly (and maybe focus distance)
 //get x of pixel
 float Camera::getXoPix(int pixel)
 {
@@ -134,57 +134,10 @@ Ray Camera::getRayFromPixel(int pixel)
 // {
 //     return pixelArray;
 // }
-//get snapshots
 
-std::vector<std::vector<Vector3>> Camera::getSnapshots()
-{
-    return snapshots;
-}
 
-//add snapshot
-void Camera::addSnapshot(std::vector<Vector3> snapshot)
-{
-    snapshots.push_back(snapshot);
-}
-//clear snapshots
-void Camera::clearSnapshots()
-{
-    snapshots.clear();
-} 
-//save snapshots to png file
-void Camera::saveSnapshotsToFile(std::string fileName, int snapshot){
-    //create file
-    std::ofstream file(fileName);
-    //write header
-    file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
-    //write pixel data
-    for (int i = 0; i < pixelCount; i++){
-        file << (int)(snapshots[snapshot][i].getX() * 255) << " " << (int)(snapshots[snapshot][i].getY() * 255) << " " << (int)(snapshots[snapshot][i].getZ() * 255) << std::endl;
-    }
-    //close file
-    file.close();
-}
 
-//save snapshots to mp4 video file
-void Camera::saveSnapshotsToVideo(std::string fileName, int fps){
-    //create file
-    std::ofstream file(fileName);
-    //write header for mp4 file
-    file << "ffmpeg -r " << fps << " -f image2 -s " << pixelWidth << "x" << pixelHeight << " -i " << fileName << "%d.png -vcodec libx264 -crf 25  -pix_fmt yuv420p " << fileName << ".mp4" << std::endl;
-    //write pixel data for each snapshot to mp4 file
-    for (int i = 0; i < snapshots.size(); i++){
-        //write header for png file
-        file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
-        //write pixel data for png file
-        for (int j = 0; j < pixelCount; j++){
-            file << (int)(snapshots[i][j].getX() * 255) << " " << (int)(snapshots[i][j].getY() * 255) << " " << (int)(snapshots[i][j].getZ() * 255) << std::endl;
-        }
-        //save png file
-        file << "mv " << fileName << i << ".png " << fileName << i << ".png" << std::endl;
-    }
-    //close file
-    file.close();
-}
+
 
 
 

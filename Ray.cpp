@@ -63,7 +63,7 @@ void Ray::traceRay(std::vector<Object*> objects) {
     float minDistance = 1000000;
     int minIndex = -1;
     for (int k = 0; k < objects.size(); k++) {
-        float distance = objects[k]->checkIntersection(*this);
+        float distance = objects[k]->checkIntersection(*this);//TODO: should this be by reference?
         if (distance > 0 && distance < minDistance) {
             minDistance = distance;
             minIndex = k;
@@ -71,24 +71,23 @@ void Ray::traceRay(std::vector<Object*> objects) {
     }
     if (minIndex != -1){
         advance(minDistance);
-    
+        objectsHit.push_back(objects[minIndex]);
 
         // if object is a light
         if (objects[minIndex]->getType() == "light") {
             //calculate color of pixel based on light intensity and color
-            Vector3 pixColor = objects[minIndex]->getColor();
+            //Vector3 pixColor = objects[minIndex]->getColor();
             //TODO calculate based on colors light has already hit
-            pixColor *= objects[minIndex]->getIntensity()/getBounces();
-            return pixColor;
+            return ;
         }
         //get point of intersection
-        Vector3 pointOfIntersection = objects[minIndex]->getPointOfIntersection(&this);
+        Vector3 pointOfIntersection = origin;
         //get normal at point of intersection
         Vector3 normal = objects[minIndex]->getNormal(pointOfIntersection);
         //get color of object
-        Vector3 color = objects[minIndex]->getColor();
+        //Vector3 color = objects[minIndex]->getColor();
         //get material properties of object
-        float reflectiveCoefficient = objects[minIndex]->getReflectiveCoefficient();
+        float reflectiveCoefficient = objects[minIndex]->getReflectionCoefficient();
         float transmissionCoefficient = objects[minIndex]->getTransmissionCoefficient();
         //if reflective coefficient is greater than 0, reflect ray
 
@@ -101,7 +100,7 @@ void Ray::traceRay(std::vector<Object*> objects) {
             }
         }
 
-        if (reflectiveCoefficient > 0) {
+        if (reflectiveCoefficient > 0 && reflect) {
             //reflect ray
             this->reflect(normal);
             //set ray origin to point of intersection
@@ -109,13 +108,13 @@ void Ray::traceRay(std::vector<Object*> objects) {
             //set ray direction to reflected ray direction
             setDirection(getDirection());
             //increment reflection count
-            this->incrementBounces();
+            incrementBounces();
             //call traceRay function again
             return traceRay(objects);
         }
         //if reflective coefficient is 0 and refractive coefficient is greater than 0, refract ray
         //if reflective coefficient is greater than 0 and refractive coefficient is greater than 0, create new ray and refract it
-        if (reflectiveCoefficient == 0 && transmissionCoefficient > 0) {
+        else if (transmissionCoefficient > 0) {
             //refract ray
             refract(normal, currentRefractiveIndex, objects[minIndex]->getRefractiveIndex());
             //set ray origin to point of intersection
@@ -131,8 +130,9 @@ void Ray::traceRay(std::vector<Object*> objects) {
 }
 
 //update ray color
-void Ray::updateColor(Vector3 color, float coefficient1, float coefficient2) {
-    this->color = this->color * coefficient1 + color * coefficient2;
+Vector3 Ray::getColor() {
+    //TODO
+    return Vector3();
 }
 
 
