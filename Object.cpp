@@ -1,14 +1,24 @@
 //implementations of the Object class
-//include standard libraries
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <string>
-//include my classes
-#include "Vector3.h"
-#include "Ray.h"
 #include "Object.h"
-
+//constructors
+Object::Object() {
+    position = Vector3();
+    color = Vector3();
+    diffuseCoefficient = 0;
+    refractiveIndex = 0;
+    reflectionCoefficient = 0;
+    transmissionCoefficient = 0;
+}
+Object::Object(Vector3 position, Vector3 color, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient) {
+    //do nothing
+}
+Object::Object(Vector3 position, Vector3 Normal , Vector3 color, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient) {
+    //do nothing
+}
+//destructor
+Object::~Object() {
+    //do nothing
+}
 //public methods
 //getters
 Vector3 Object::getPosition()
@@ -71,4 +81,5 @@ void Object::setTransmissionCoefficient(float transmissionCoefficient)
 {
     this->transmissionCoefficient = transmissionCoefficient;
 }
+
 

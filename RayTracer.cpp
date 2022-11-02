@@ -8,18 +8,32 @@
 #include <string>
 //include my classes
 #include "Vector3.h"
-#include "Ray.h"
+#include "Object.h"
 #include "Sphere.h"
 #include "Plane.h"
 #include "Light.h"
 #include "Camera.h"
-#include "Object.h"
-
+#include "Ray.h"
 
 //#include "RayTracer.h"
 
 //which parts of this project still need to be done?
 
+
+//save snapshots to png file
+void saveSnapshotsToFile(std::string fileName, std::vector<Vector3> snapshot, int pixelWidth, int pixelHeight) {
+    //create file
+    std::ofstream file(fileName);
+    //write header
+    file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
+    //write pixel data
+    int pixelCount = pixelWidth * pixelHeight;
+    for (int i = 0; i < pixelCount; i++){
+        file << (int)(snapshot[i].getX() * 255) << " " << (int)(snapshot[i].getY() * 255) << " " << (int)(snapshot[i].getZ() * 255) << std::endl;
+    }
+    //close file
+    file.close();
+}
 
 //TODO destructors
 //TODO make reflections random depending on diffuse coefficient
@@ -93,6 +107,8 @@ int main() {
 
   //loop through pixels 
   for (int i = 0; i < camera.getPixelWidth(); i++) {
+    //print out progress
+    std::cout << "Progress: " << (float)i / (float)camera.getPixelWidth() * 100 << "%" << std::endl;
     for (int j = 0; j < camera.getPixelHeight(); j++) {
       //ray color Vector3, in future will have multiple rays per pixel and average color
       Vector3 rayColor(0, 0, 0);
@@ -107,7 +123,7 @@ int main() {
   //save current snapshot to file
   snapshots.push_back(currentSnapshot);
   //save snapshots to file
-  saveSnapshotsToFile("twoSpheres.png", snapshots[0], camera.getPixelWidth(), camera.getPixelHeight());
+  saveSnapshotsToFile("twoSpheres.png", currentSnapshot, camera.getPixelWidth(), camera.getPixelHeight());
 
   return 0;
 }
@@ -115,20 +131,6 @@ int main() {
 
 
 
-//save snapshots to png file
-void saveSnapshotsToFile(std::string fileName, std::vector<Vector3> snapshot, int pixelWidth, int pixelHeight) {
-    //create file
-    std::ofstream file(fileName);
-    //write header
-    file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
-    //write pixel data
-    int pixelCount = pixelWidth * pixelHeight;
-    for (int i = 0; i < pixelCount; i++){
-        file << (int)(snapshot[i].getX() * 255) << " " << (int)(snapshot[i].getY() * 255) << " " << (int)(snapshot[i].getZ() * 255) << std::endl;
-    }
-    //close file
-    file.close();
-}
 
 //save snapshots to mp4 video file
 // void saveSnapshotsToVideo(std::string fileName, int fps){

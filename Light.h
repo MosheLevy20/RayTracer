@@ -37,6 +37,7 @@ public:
     float getSize();
     float getIntensity();
 
+
     //type
     std::string getType();
 };

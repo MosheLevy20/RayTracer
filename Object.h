@@ -9,20 +9,8 @@
 
 //include my classes
 #include "Vector3.h"
-#include "Ray.h"
-
+//#include "Ray.h"
 class Ray;
-//since Ray.h includes Object.h, i can't include Object.h in Ray.h, what do i do?
-//i can't include Object.h in Ray.h because it will cause a circular dependency
-//therefore, i have to include Object.h in Ray.h and Sphere.h and Plane.h
-//but i can't include Ray.h in Object.h because it will cause a circular dependency
-//the solution is to forward declare the Ray class
-//this is done by including the following line in Object.h
-//class Ray;
-//this is called a forward declaration
-//this tells the compiler that the Ray class exists
-//but it doesn't know anything about the Ray class
-//this is enough for the compiler to compile the Object class
 
 class Object
 {
@@ -47,6 +35,11 @@ private:
 
 
 public:
+    Object();
+    Object(Vector3 position, Vector3 color, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient);
+    Object(Vector3 position, Vector3 Normal, Vector3 color, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient);
+    ~Object();
+    
     //setters
     void setPosition(Vector3 position);
     void setColor(Vector3 color);
@@ -63,7 +56,7 @@ public:
     float getDiffuseCoefficient();
     Vector3 getPosition();
 
-    virtual float checkIntersection(Ray ray);
+    virtual float checkIntersection(Ray ray) = 0;
     //get normal at point of intersection
     virtual Vector3 getNormal(Vector3 point) = 0;
     //returns type of object

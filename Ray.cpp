@@ -53,6 +53,10 @@ void Ray::refract(Vector3 normal, float n1, float n2) {
         direction = direction * n + normal * (n * cosI - cosT);
     }
 }
+//increment bounces
+void Ray::incrementBounces() {
+    bounces++;
+}
 //check for intersection with objects in scene
 void Ray::traceRay(std::vector<Object*> objects) {
     float minDistance = 1000000;

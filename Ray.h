@@ -9,8 +9,7 @@
 #include <string>
 //include Vector3 class
 #include "Vector3.h"
-//if not defined
-class Object;
+#include "Object.h"
 
 class Ray
 {

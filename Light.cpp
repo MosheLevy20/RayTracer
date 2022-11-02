@@ -59,13 +59,25 @@ float Light::checkIntersection(Ray ray)
         return -1;
     }
     //if discriminant is 0, one intersection
-    else if (discriminant == 0)
+    else
     {
         return 1;
     }
 
 }
 
+//get normal at point of intersection
+Vector3 Light::getNormal(Vector3 point)
+{
+    //get sphere position
+    Vector3 spherePosition = this->getPosition();
+    //get normal
+    Vector3 normal = point - spherePosition;
+    //normalize normal
+    normal.normalize();
+
+    return normal;
+}
 //type
 std::string Light::getType()
 {
