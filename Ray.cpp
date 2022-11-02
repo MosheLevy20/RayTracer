@@ -5,13 +5,14 @@
 //include my classes
 #include "Vector3.h"
 #include "Ray.h"
+#include "Object.h"
 
 //constructors
 Ray::Ray() {
     origin = Vector3();
     direction = Vector3();
 }
-Ray::Ray(Vector3 origin, Vector3 direction, Vector3 color, int pixelIndex) {
+Ray::Ray(Vector3 origin, Vector3 direction, int pixelIndex) {
     this->origin = origin;
     this->direction = direction;
     this->pixelIndex = pixelIndex;
@@ -108,15 +109,15 @@ void Ray::traceRay(std::vector<Object*> objects) {
             //set ray direction to reflected ray direction
             setDirection(getDirection());
             //increment reflection count
-            incrementBounces();
+            this->incrementBounces();
             //call traceRay function again
-            return traceRay(currentRay);
+            return traceRay(objects);
         }
         //if reflective coefficient is 0 and refractive coefficient is greater than 0, refract ray
         //if reflective coefficient is greater than 0 and refractive coefficient is greater than 0, create new ray and refract it
         if (reflectiveCoefficient == 0 && transmissionCoefficient > 0) {
             //refract ray
-            refract(normal);
+            refract(normal, currentRefractiveIndex, objects[minIndex]->getRefractiveIndex());
             //set ray origin to point of intersection
             setOrigin(pointOfIntersection);
             //set ray direction to refracted ray direction
@@ -124,7 +125,7 @@ void Ray::traceRay(std::vector<Object*> objects) {
             //increment reflection count
             incrementBounces();
             //call traceRay function again
-            return traceRay(currentRay);
+            return traceRay(objects);
         }
     }
 }

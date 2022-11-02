@@ -2,6 +2,7 @@
 //main file where objects in scene are specified and ray tracing is performed
 //include standard libraries
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <vector>
 #include <string>
@@ -25,13 +26,28 @@ int main() {
   std::vector<Object*> objects;
   
   //create 2 spheres, one transparent and one reflective
-
+  //what is the sphere constructor parameter list?
+  //Sphere(Vector3 position, Vector3 color, float radius, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient)
+  //what is the refractive index of glass?
+  //1.5
+  Sphere sphere1(Vector3(200, 0, 200), Vector3(1, 0.5, 0.5), 50, 0.1, 0, 1.0, 0.0);
+  Sphere sphere2(Vector3(0, 0, 200), Vector3(1, 1, 1), 50, 0.0, 1.5, 1.0, 0.0);
 
   //create 6 planes as walls of room, floor, and ceiling
-  
-  
-  //add 1 light on ceiling
+  //what is the plane constructor parameter list?
+  //Plane(Vector3 position, Vector3 normal, Vector3 color, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient)
+  Plane plane1(Vector3(0, 0, -200), Vector3(0, 0, 1), Vector3(1, 1, 0), 1, 0, 1, 0.0);
+  Plane plane2(Vector3(0, 0, 600), Vector3(0, 0, -1), Vector3(1, 0, 1), 1, 0, 1, 0.0);
+  //Plane plane3(Vector3(0, -200, 0), Vector3(0, 1, 0), Vector3(1, 1, 1), 1, 0, 1, 0.0);
+  Plane plane4(Vector3(0, 200, 0), Vector3(0, -1, 0), Vector3(0, 1, 1), 1, 0, 1, 0.0);
+  Plane plane5(Vector3(-200, 0, 0), Vector3(1, 0, 0), Vector3(0, 0, 1), 1, 0, 1, 0.0);
+  Plane plane6(Vector3(200, 0, 0), Vector3(-1, 0, 0), Vector3(0, 1, 0), 1, 0, 1, 0.0);
 
+  //add 1 light on ceiling
+  //what is the light constructor parameter list?
+  //Light(Vector3 position, Vector3 color, float size, float intensity)
+  Light light1(Vector3(0, -200, 0), Vector3(1, 1, 1), 30, 1);
+  
 
 
   //add objects to vector
@@ -40,7 +56,7 @@ int main() {
 
   objects.push_back(&plane1);
   objects.push_back(&plane2);
-  objects.push_back(&plane3);
+  //objects.push_back(&plane3);
   objects.push_back(&plane4);
   objects.push_back(&plane5);
   objects.push_back(&plane6);
@@ -89,7 +105,7 @@ int main() {
   //save current snapshot to file
   snapshots.push_back(currentSnapshot);
   //save snapshots to file
-  saveSnapshotsToFile("twoSpheres.png", 0);
+  saveSnapshotsToFile("twoSpheres.png", snapshots[0], camera.getPixelWidth(), camera.getPixelHeight());
 
   return 0;
 }
@@ -98,39 +114,40 @@ int main() {
 
 
 //save snapshots to png file
-void saveSnapshotsToFile(std::string fileName, int snapshot){
+void saveSnapshotsToFile(std::string fileName, std::vector<Vector3> snapshot, int pixelWidth, int pixelHeight) {
     //create file
     std::ofstream file(fileName);
     //write header
     file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
     //write pixel data
+    int pixelCount = pixelWidth * pixelHeight;
     for (int i = 0; i < pixelCount; i++){
-        file << (int)(snapshots[snapshot][i].getX() * 255) << " " << (int)(snapshots[snapshot][i].getY() * 255) << " " << (int)(snapshots[snapshot][i].getZ() * 255) << std::endl;
+        file << (int)(snapshot[i].getX() * 255) << " " << (int)(snapshot[i].getY() * 255) << " " << (int)(snapshot[i].getZ() * 255) << std::endl;
     }
     //close file
     file.close();
 }
 
 //save snapshots to mp4 video file
-void saveSnapshotsToVideo(std::string fileName, int fps){
-    //create file
-    std::ofstream file(fileName);
-    //write header for mp4 file
-    file << "ffmpeg -r " << fps << " -f image2 -s " << pixelWidth << "x" << pixelHeight << " -i " << fileName << "%d.png -vcodec libx264 -crf 25  -pix_fmt yuv420p " << fileName << ".mp4" << std::endl;
-    //write pixel data for each snapshot to mp4 file
-    for (int i = 0; i < snapshots.size(); i++){
-        //write header for png file
-        file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
-        //write pixel data for png file
-        for (int j = 0; j < pixelCount; j++){
-            file << (int)(snapshots[i][j].getX() * 255) << " " << (int)(snapshots[i][j].getY() * 255) << " " << (int)(snapshots[i][j].getZ() * 255) << std::endl;
-        }
-        //save png file
-        file << "mv " << fileName << i << ".png " << fileName << i << ".png" << std::endl;
-    }
-    //close file
-    file.close();
-}
+// void saveSnapshotsToVideo(std::string fileName, int fps){
+//     //create file
+//     std::ofstream file(fileName);
+//     //write header for mp4 file
+//     file << "ffmpeg -r " << fps << " -f image2 -s " << pixelWidth << "x" << pixelHeight << " -i " << fileName << "%d.png -vcodec libx264 -crf 25  -pix_fmt yuv420p " << fileName << ".mp4" << std::endl;
+//     //write pixel data for each snapshot to mp4 file
+//     for (int i = 0; i < snapshots.size(); i++){
+//         //write header for png file
+//         file << "P3 " << pixelWidth << " " << pixelHeight << " 255" << std::endl;
+//         //write pixel data for png file
+//         for (int j = 0; j < pixelCount; j++){
+//             file << (int)(snapshots[i][j].getX() * 255) << " " << (int)(snapshots[i][j].getY() * 255) << " " << (int)(snapshots[i][j].getZ() * 255) << std::endl;
+//         }
+//         //save png file
+//         file << "mv " << fileName << i << ".png " << fileName << i << ".png" << std::endl;
+//     }
+//     //close file
+//     file.close();
+// }
 
 //to compile this project in terminal, type:
 // g++ -std=c++11 -o RayTracer RayTracer.cpp Vector3.cpp Ray.cpp Object.cpp Sphere.cpp Plane.cpp Light.cpp Camera.cpp

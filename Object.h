@@ -30,7 +30,7 @@ private:
 
 
 public:
-    virtual bool checkIntersection() = 0;
+    virtual bool checkIntersection(Vector3 point, Vector3 rayDir) = 0;
     //get normal at point of intersection
     virtual Vector3 getNormal(Vector3 point) = 0;
     //get point of intersection
@@ -41,6 +41,15 @@ public:
     virtual float getIntensity() = 0;
     //get color
     virtual Vector3 getColor() = 0;
-    
+    //get refractive index
+    virtual float getRefractiveIndex() = 0;
+    //get reflection coefficient
+    virtual float getReflectionCoefficient() = 0;
+    //get transmission coefficient
+    virtual float getTransmissionCoefficient() = 0;
+    //get diffuse coefficient
+    virtual float getDiffuseCoefficient() = 0;
+    //get position
+    virtual Vector3 getPosition() = 0;
 
 };

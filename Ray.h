@@ -31,9 +31,9 @@ private:
     //vector of all the objects the ray has hit
     std::vector<Object*> objectsHit;
 
+    float currentRefractiveIndex;
 
-
-
+ 
 
 public:
     Ray();
@@ -42,6 +42,7 @@ public:
     //accessors
     Vector3 getOrigin() const;
     Vector3 getDirection() const;
+    //this function should calculate the color of the ray based on the objects it has hit and the light it has hit
     Vector3 getColor() const;
     int getPixelIndex() const;
     //get reflection count
@@ -64,6 +65,9 @@ public:
 
     //update ray color
     void updateColor(Vector3 color, float coefficient1, float coefficient2);
+
+    //increment bounces
+    void incrementBounces();
 
     
 

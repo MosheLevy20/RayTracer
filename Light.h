@@ -28,7 +28,7 @@ private:
 public:
     //constructors
     Light();
-    Light(Vector3 position, Vector3 color, float size);
+    Light(Vector3 position, Vector3 color, float size, float intensity);
     ~Light();
 
     //getters
