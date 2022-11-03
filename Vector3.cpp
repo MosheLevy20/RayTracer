@@ -14,16 +14,17 @@ Vector3::Vector3() {
 Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
 Vector3::Vector3(const Vector3& v){
-    //copy Vector3 from pointer
+    //copy Vector3 from another
     x = v.getX();
     y = v.getY();
     z = v.getZ();
 }
 
+
 //destructor
 Vector3::~Vector3() {}
 
-//accessors
+//getters
 float Vector3::getX() const {
     return x;
 }
@@ -33,7 +34,7 @@ float Vector3::getY() const {
 float Vector3::getZ() const {
     return z;
 }
-//mutators
+//setters
 void Vector3::setX(float x) {
     this->x = x;
 }

@@ -16,10 +16,9 @@ class Ray
 private:
     Vector3 origin;
     Vector3 direction;
-
-    //color of ray
     Vector3 color;
 
+    //pixel that this ray is associated with
     int pixelIndex;
 
     //distance traveled
@@ -39,7 +38,7 @@ public:
     Ray();
     Ray(Vector3 origin, Vector3 direction, int pixelIndex);
     ~Ray();
-    //accessors
+    //getters
     Vector3 getOrigin() const;
     Vector3 getDirection() const;
     
@@ -49,23 +48,21 @@ public:
     //this function should calculate the color of the ray based on the objects it has hit and the light it has hit
     Vector3 getColor();
 
-    //mutators
+    //setters
     void setOrigin(Vector3 origin);
     void setDirection(Vector3 direction);
     void setColor(Vector3 color);
 
-    //trace ray
+
     void traceRay(std::vector<Object*> objects);
-    //advance ray
+
     void advance(float distance);
-    //reflect ray
+
     void reflect(Vector3 normal, float diffuse);
-    //refract ray
+
     void refract(Vector3 normal, float n1, float n2);
 
    
-
-    //increment bounces
     void incrementBounces();
 
     

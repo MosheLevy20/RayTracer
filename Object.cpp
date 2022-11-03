@@ -1,6 +1,6 @@
 //implementations of the Object class
 #include "Object.h"
-//constructors
+//constructors 
 Object::Object() {
     position = Vector3();
     color = Vector3();
@@ -19,7 +19,7 @@ Object::Object(Vector3 position, Vector3 Normal , Vector3 color, float diffuseCo
 Object::~Object() {
     //do nothing
 }
-//public methods
+
 //getters
 Vector3 Object::getPosition()
 {

@@ -16,10 +16,8 @@ class Ray;
 class Sphere : public Object
 {
 private:
-    //radius of sphere
     float radius;
     
-
 public:
     //constructors
     Sphere();

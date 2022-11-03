@@ -8,22 +8,17 @@ Light::Light()
     this->setPosition(Vector3());
     //set color to white
     this->setColor(Vector3(1, 1, 1));
-    //set intensity to 1
+
     this->intensity = 1;
-    //set size to 1
     this->size = 1;
 
 }
 
 Light::Light(Vector3 position, Vector3 color, float size, float intensity)
 {
-    //set position
     this->setPosition(position);
-    //set color
     this->setColor(color);
-    //set intensity
     this->intensity = intensity;
-    //set size
     this->size = size;
 }
 
@@ -33,18 +28,15 @@ Light::~Light()
     //do nothing
 }
 
-//private methods
+
 //check for intersection with ray
 float Light::checkIntersection(Ray ray)
 {
     //treat the light as a sphere
-    //get ray origin
+
     Vector3 rayOrigin = ray.getOrigin();
-    //get ray direction
     Vector3 rayDir = ray.getDirection();
-    //get sphere position
     Vector3 spherePosition = this->getPosition();
-    //get sphere radius
     float sphereRadius = size;
 
     //calculate discriminant
@@ -58,7 +50,7 @@ float Light::checkIntersection(Ray ray)
     {
         return -1;
     }
-    //if discriminant is 0, one intersection
+    //otherwise the light is hit
     else
     {
         return 1;
@@ -69,15 +61,13 @@ float Light::checkIntersection(Ray ray)
 //get normal at point of intersection
 Vector3 Light::getNormal(Vector3 point)
 {
-    //get sphere position
     Vector3 spherePosition = this->getPosition();
-    //get normal
     Vector3 normal = point - spherePosition;
-    //normalize normal
     normal.normalize();
 
     return normal;
 }
+
 //type
 std::string Light::getType()
 {

@@ -5,19 +5,12 @@
 //default constructor
 Sphere::Sphere()
 {
-    //set position
     this->setPosition(Vector3());
-    //set color
     this->setColor(Vector3());
-    //set radius
     this->radius = 0;
-    //set diffuse coefficient
     this->setDiffuseCoefficient(0);
-    //set refractive index
     this->setRefractiveIndex(0);
-    //set reflection coefficient
     this->setReflectionCoefficient(0);
-    //set transmission coefficient
     this->setTransmissionCoefficient(0);
 
 }
@@ -25,19 +18,12 @@ Sphere::Sphere()
 //constructor with parameters
 Sphere::Sphere(Vector3 position, Vector3 color, float radius, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient)
 {
-    //set position
     this->setPosition(position);
-    //set color
     this->setColor(color);
-    //set radius
     this->radius = radius;
-    //set diffuse coefficient
     this->setDiffuseCoefficient(diffuseCoefficient);
-    //set refractive index
     this->setRefractiveIndex(refractiveIndex);
-    //set reflection coefficient
     this->setReflectionCoefficient(reflectionCoefficient);
-    //set transmission coefficient
     this->setTransmissionCoefficient(transmissionCoefficient);
 }
 
@@ -51,13 +37,9 @@ Sphere::~Sphere()
 //check if ray intersects sphere, returns distance to intersection point if it does, returns -1 if it doesn't
 float Sphere::checkIntersection(Ray ray)
 {
-    //get ray origin
     Vector3 rayOrigin = ray.getOrigin();
-    //get ray direction
     Vector3 rayDir = ray.getDirection();
-    //get sphere position
     Vector3 spherePosition = this->getPosition();
-    //get sphere radius
     float sphereRadius = this->radius;
 
     //calculate discriminant
@@ -76,7 +58,6 @@ float Sphere::checkIntersection(Ray ray)
     {
         //calculate distance to intersection point
         float distance = -b / (2 * a);
-        //return distance
         return distance;
     }
     //if discriminant is greater than 0, two intersections
@@ -94,11 +75,9 @@ float Sphere::checkIntersection(Ray ray)
 //get normal at point of intersection
 Vector3 Sphere::getNormal(Vector3 point)
 {
-    //get sphere position
     Vector3 spherePosition = this->getPosition();
     //get normal
     Vector3 normal = point - spherePosition;
-    //normalize normal
     normal.normalize();
     return normal;
 }

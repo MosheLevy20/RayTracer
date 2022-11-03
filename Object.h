@@ -1,7 +1,7 @@
 //header for Object class
 //include standard libraries
 #ifndef OBJECT_H
-#define OBJECT_H
+#define OBJECT_H 
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -15,22 +15,13 @@ class Ray;
 class Object
 {
 private:
-    //position of object
     Vector3 position;
-
-    //color of object
     Vector3 color;
 
-    //diffuse coefficient
+
     float diffuseCoefficient;
-
-    //refractive index
     float refractiveIndex;
-
-    //reflection coefficient
     float reflectionCoefficient;
-
-    //transmission coefficient
     float transmissionCoefficient;
 
 
@@ -61,8 +52,5 @@ public:
     virtual Vector3 getNormal(Vector3 point) = 0;
     //returns type of object
     virtual std::string getType() = 0;
-    //getIntensity
-    
-
 };
 #endif

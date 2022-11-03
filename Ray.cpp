@@ -11,29 +11,28 @@ Ray::Ray(Vector3 origin, Vector3 direction, int pixelIndex) {
     this->origin = origin;
     this->direction = direction;
     this->pixelIndex = pixelIndex;
-    //bounces
+
     bounces = 0;
-    //distance
     distance = 0;
 }
 
 Ray::~Ray() {}
 
-//accessors
+//getters
 Vector3 Ray::getOrigin() const {
     return origin;
 }
 Vector3 Ray::getDirection() const {
     return direction;
 }
-//mutators
+//setters
 void Ray::setOrigin(Vector3 origin) {
     this->origin = origin;
 }
 void Ray::setDirection(Vector3 direction) {
     this->direction = direction;
 }
-//private methods
+
 //advance ray
 void Ray::advance(float distance) {
     origin = origin + direction * distance;
@@ -43,14 +42,13 @@ void Ray::advance(float distance) {
 void Ray::reflect(Vector3 normal, float diffuse) {
     //get random vector3
     Vector3 randomVector = Vector3(rand() % 1000, rand() % 1000, rand() % 1000);
-    //normalize random vector
     randomVector.normalize();
 
     direction = direction - normal * 2 * direction.dot(normal);
-    //normalize direction
+
     direction.normalize();
+    //add random vector to mimic diffuse reflection
     direction = direction + randomVector * diffuse;
-    //normalize direction
     direction.normalize();
 }
 //refract ray
@@ -91,25 +89,20 @@ void Ray::traceRay(std::vector<Object*> objects) {
         //std::cout<<"min obj type "<<objects[minIndex]->getType()<<" bounces "<<bounces<<std::endl;
         // if object is a light or bounce limit is reached, return
         if (objects[minIndex]->getType() == "light" || bounces >= 30) {
-            //calculate color of pixel based on light intensity and color
-            //Vector3 pixColor = objects[minIndex]->getColor();
-            //TODO calculate based on colors light has already hit
             //std::cout<<"hit light"<<std::endl;
             return ;
         }
         //std::cout<<"minDistance: "<<minDistance<<" minIndex: "<<minIndex<<std::endl;
-        //get point of intersection
+    
         Vector3 pointOfIntersection = origin;
+
         //get normal at point of intersection
         Vector3 normal = objects[minIndex]->getNormal(pointOfIntersection);
-        //get color of object
-        //Vector3 color = objects[minIndex]->getColor();
+
         //get material properties of object
         float reflectiveCoefficient = objects[minIndex]->getReflectionCoefficient();
         float transmissionCoefficient = objects[minIndex]->getTransmissionCoefficient();
-        //diffuse coefficient
         float diffuseCoefficient = objects[minIndex]->getDiffuseCoefficient();
-        //if reflective coefficient is greater than 0, reflect ray
 
         bool reflect = true;
         if (reflectiveCoefficient > 0 && transmissionCoefficient > 0){
@@ -124,25 +117,15 @@ void Ray::traceRay(std::vector<Object*> objects) {
             //reflect ray
             //std::cout<<"reflect"<<std::endl;
             this->reflect(normal, diffuseCoefficient);
-            //set ray origin to point of intersection
-            setOrigin(pointOfIntersection);
-            //set ray direction to reflected ray direction
-            //setDirection(getDirection());
-            //increment reflection count
+            
             incrementBounces();
             //call traceRay function again
             return traceRay(objects);
         }
-        //if reflective coefficient is 0 and refractive coefficient is greater than 0, refract ray
-        //if reflective coefficient is greater than 0 and refractive coefficient is greater than 0, create new ray and refract it
         else if (transmissionCoefficient > 0) {
-            //refract ray
+            //refract ray (this is not working yet)
             refract(normal, currentRefractiveIndex, objects[minIndex]->getRefractiveIndex());
-            //set ray origin to point of intersection
-            setOrigin(pointOfIntersection);
-            //set ray direction to refracted ray direction
-            setDirection(getDirection());
-            //increment reflection count
+            
             incrementBounces();
             //call traceRay function again
             return traceRay(objects);
