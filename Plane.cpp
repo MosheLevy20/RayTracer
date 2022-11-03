@@ -61,6 +61,7 @@ std::string Plane::getType()
 
 float Plane::checkIntersection(Ray ray)
 {
+
     //get ray origin and direction
     Vector3 rayOrigin = ray.getOrigin();
     Vector3 rayDirection = ray.getDirection();
@@ -68,8 +69,10 @@ float Plane::checkIntersection(Ray ray)
     Vector3 planePosition = this->getPosition();
     Vector3 planeNormal = this->getNormal(planePosition);
     //get distance from ray origin to plane
+    //std::cout<<"plane dots "<< (planePosition - rayOrigin).dot(planeNormal)<<", " << rayDirection.dot(planeNormal) << std::endl;
     float distance = (planePosition - rayOrigin).dot(planeNormal) / rayDirection.dot(planeNormal);
     //if distance is negative, return -1
+    //std::cout<<"plane dist "<< distance << std::endl;
     if (distance < 0)
     {
         return -1;

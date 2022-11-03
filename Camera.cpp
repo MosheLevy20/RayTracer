@@ -3,6 +3,7 @@
 //include header file
 #include "Camera.h"
 
+
 //constructors
 //default constructor
 Camera::Camera()
@@ -12,9 +13,12 @@ Camera::Camera()
     //set direction
     direction = Vector3(0, 0, 1);
     //set up
-    up = Vector3(0, 1, 0);
-    //set right
-    right = Vector3(1, 0, 0);
+    float sinHalfFOV = sin(45.0f / 2.0f);
+    up = Vector3(0, sinHalfFOV, 0);
+    //set rightf
+    //sin of half of field of view
+
+    right = Vector3(sinHalfFOV, 0, 0);
     //set field of view
     fieldOfView = 90;
     //set near plane
@@ -46,9 +50,15 @@ Camera::Camera(Vector3 position, Vector3 direction, Vector3 up, float fieldOfVie
     //set direction
     this->direction = direction;
     //set up
+    float sinHalfFOV = sin(45.0f / 2.0f);
     this->up = up;
-    //set right
+    // up *= sin(fieldOfView / 2);
+    // //set right
     this->right = direction.cross(up);
+    this->right *= sin(fieldOfView / 2);
+    this->up *= sin(fieldOfView / 2);
+   
+    
     //set field of view
     this->fieldOfView = fieldOfView;
     //set near plane
@@ -97,12 +107,12 @@ int Camera::getPixelHeight()
 //get x of pixel
 float Camera::getXoPix(int pixel)
 {
-    return (pixel % (int)pixelWidth) * pixelWidth - width / 2;
+    return ((pixel % (int)pixelWidth) - pixelWidth / 2);
 }
 //get y of pixel
 float Camera::getYoPix(int pixel)
 {
-    return (pixel / (int)pixelWidth) * pixelHeight - height / 2;
+    return ((pixel / (int)pixelWidth) - pixelWidth / 2);
 }
 
 //public methods
@@ -114,9 +124,17 @@ Ray Camera::getRayFromPixel(int pixel)
     //get y of pixel
     float y = getYoPix(pixel);
     //get direction of ray
-    Vector3 direction = this->direction + right * x + up * y;
+    //get direction of ray
+    Vector3 direction = this->direction + right * x/10 + up * y/10;
+    
+
+    //Vector3 direction = this->direction + right * x *pixelSize + up * y*pixelSize;
+    //normalize direction
+    direction.normalize();
     //get position of ray which is the direction projected onto the near plane
-    Vector3 position = right * x * pixelSize + up * y * pixelSize + this->position;
+    Vector3 position = this->position+right * x + up * y;
+    //print direction string
+    //direction.print();
 
     //return ray
     return Ray(position, direction, pixel);

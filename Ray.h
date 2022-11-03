@@ -42,10 +42,11 @@ public:
     //accessors
     Vector3 getOrigin() const;
     Vector3 getDirection() const;
-    //this function should calculate the color of the ray based on the objects it has hit and the light it has hit
+    
     int getPixelIndex() const;
     //get reflection count
     int getBounces() const;
+    //this function should calculate the color of the ray based on the objects it has hit and the light it has hit
     Vector3 getColor();
 
     //mutators
@@ -58,7 +59,7 @@ public:
     //advance ray
     void advance(float distance);
     //reflect ray
-    void reflect(Vector3 normal);
+    void reflect(Vector3 normal, float diffuse);
     //refract ray
     void refract(Vector3 normal, float n1, float n2);
 

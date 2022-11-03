@@ -51,8 +51,8 @@ int main() {
   //Sphere(Vector3 position, Vector3 color, float radius, float diffuseCoefficient, float refractiveIndex, float reflectionCoefficient, float transmissionCoefficient)
   //what is the refractive index of glass?
   //1.5
-  Sphere sphere1(Vector3(200, 0, 200), Vector3(1, 0.5, 0.5), 50, 0.1, 0, 1.0, 0.0);
-  Sphere sphere2(Vector3(0, 0, 200), Vector3(1, 1, 1), 50, 0.0, 1.5, 1.0, 0.0);
+  Sphere sphere1(Vector3(50, 200, 0), Vector3(1, 0.5, 0.5), 50, 0.1, 0, 1.0, 0.0);
+  // Sphere sphere2(Vector3(0, 0, 200), Vector3(1, 1, 1), 50, 0.0, 1.5, 1.0, 0.0);
 
   //create 6 planes as walls of room, floor, and ceiling
   //what is the plane constructor parameter list?
@@ -67,13 +67,23 @@ int main() {
   //add 1 light on ceiling
   //what is the light constructor parameter list?
   //Light(Vector3 position, Vector3 color, float size, float intensity)
-  Light light1(Vector3(0, -200, 0), Vector3(1, 1, 1), 30, 1);
+  Light light1(Vector3(0, -200, -200), Vector3(1, 1, 1), 30, 1);
+
+  Light light2(Vector3(0, 200, 200), Vector3(1, 1, 1), 100, 1);
+
+  Light light3(Vector3(-200, 0, 0), Vector3(1, 1, 1), 100, 1);
+
+  Light light4(Vector3(200, 0, 0), Vector3(1, 1, 1), 100, 1);
+
+  Light light5(Vector3(0, 0, -200), Vector3(1, 1, 1), 100, 1);
+
+  Light light6(Vector3(0, 0, 600), Vector3(1, 1, 1), 100, 1);
   
 
 
   //add objects to vector
-  objects.push_back(&sphere1);
-  objects.push_back(&sphere2);
+  //objects.push_back(&sphere1);
+  // objects.push_back(&sphere2);
 
   objects.push_back(&plane1);
   objects.push_back(&plane2);
@@ -82,17 +92,22 @@ int main() {
   objects.push_back(&plane5);
   objects.push_back(&plane6);
 
-  objects.push_back(&light1);
+  //objects.push_back(&light1);
+  objects.push_back(&light2);
+  // objects.push_back(&light3);
+  // objects.push_back(&light4);
+  // objects.push_back(&light5);
+  // objects.push_back(&light6);
 
   //create camera
-  Vector3 cameraPosition(0, 0, 0);
+  Vector3 cameraPosition(0, -30, 0);
   Vector3 cameraDirection(0, 0, 1);
-  Vector3 cameraUp(0, 1, 0);
-  float cameraFOV = 90;
+  Vector3 cameraUp(1, 0, 0);
+  float cameraFOV = 3.14/8;
   float cameraNearPlane = 1;
   float cameraFarPlane = 100;
-  int cameraPixelWidth = 100;
-  int cameraPixelHeight = 100;
+  int cameraPixelWidth =256;
+  int cameraPixelHeight = 256;
   float cameraPixelSize = 1;
   std::cout << "Progress init: " << 0  << std::endl;
   Camera camera(cameraPosition, cameraDirection, cameraUp, cameraFOV, cameraNearPlane, cameraFarPlane, cameraPixelWidth, cameraPixelHeight, cameraPixelSize);
@@ -120,11 +135,15 @@ int main() {
       //ray color Vector3, in future will have multiple rays per pixel and average color
       Vector3 rayColor(0, 0, 0);
       //create ray for each pixel
-      Ray currentRay = camera.getRayFromPixel(i*camera.getPixelWidth()+j);
-      currentRay.traceRay(objects);
-      rayColor += currentRay.getColor();
-      //add ray color to current snapshot
-      currentSnapshot.push_back(rayColor);
+      //send n rays per pixel
+      int n = 30;
+      for (int k = 0; k < n; k++) {
+        Ray currentRay = camera.getRayFromPixel(i*camera.getPixelWidth()+j);
+        currentRay.traceRay(objects);
+        rayColor += currentRay.getColor();
+        //add ray color to current snapshot
+      }
+      currentSnapshot.push_back(rayColor/n);
       //print out progress
       //std::cout << "Progress: " << (float)j / (float)camera.getPixelHeight() * 100 << "%"<< " pixel width="<< (float)camera.getPixelWidth()<< "pixel height="<< (float)camera.getPixelHeight() << std::endl;
     }
@@ -133,6 +152,7 @@ int main() {
   snapshots.push_back(currentSnapshot);
   //save snapshots to file
   saveSnapshotsToFile("twoSpheres.txt", currentSnapshot, camera.getPixelWidth(), camera.getPixelHeight());
+  saveSnapshotsToFile("twoSpheres.png", currentSnapshot, camera.getPixelWidth(), camera.getPixelHeight());
 
   return 0;
 }
